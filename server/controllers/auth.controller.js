@@ -1,6 +1,8 @@
 import User from '../models/user.model'
 import jwt from 'jsonwebtoken'
-import expressJwt from 'express-jwt'
+// looks terrible but works!
+var { expressjwt: expJwt} = require('express-jwt')
+//import expressJwt from 'express-jwt'
 import config from './../../config/config'
 
 // route('/auth/signin').post(authCtrl.signin)
@@ -42,9 +44,10 @@ const signout = (req, res) => {
 
 // const requireSignin = () => { return true }
 // verify that the incoming request has a valid JWT in the Authorization header.
-const requireSignin = expressJwt({
+const requireSignin = expJwt({
     secret: config.jwtSecret,
-    userProperty: 'auth'
+    //userProperty: 'auth',
+    algorithms: ["HS256"]
 }) 
 
 // make sure the requesting user is only updating or deleting their own user information.
