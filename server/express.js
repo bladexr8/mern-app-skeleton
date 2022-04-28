@@ -8,6 +8,8 @@ import helmet from 'helmet'
 
 import Template from '../template';
 
+import userRoutes from './routes/user.routes'
+
 //comment out before building for production
 import devBundle from './devBundle'
 
@@ -20,11 +22,6 @@ devBundle.compile(app)
 const CURRENT_WORKING_DIR = process.cwd()
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
 
-// app template file
-app.get('/', (req, res) => {
-    res.status(200).send(Template())
-})
-
 // parse body params and attache them to req.body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -34,5 +31,12 @@ app.use(compress())
 app.use(helmet())
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors())
+
+// app template file
+app.get('/', (req, res) => {
+    res.status(200).send(Template())
+})
+
+app.use('/', userRoutes)
 
 export default app
