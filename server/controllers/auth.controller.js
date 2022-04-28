@@ -1,6 +1,7 @@
 import User from '../models/user.model'
 import jwt from 'jsonwebtoken'
 // looks terrible but works!
+// see npm docs - https://www.npmjs.com/package/express-jwt
 var { expressjwt: expJwt} = require('express-jwt')
 //import expressJwt from 'express-jwt'
 import config from './../../config/config'
