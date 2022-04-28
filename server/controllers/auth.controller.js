@@ -40,6 +40,7 @@ const signout = (req, res) => {
     })
  }
 
+// const requireSignin = () => { return true }
 // verify that the incoming request has a valid JWT in the Authorization header.
 const requireSignin = expressJwt({
     secret: config.jwtSecret,
