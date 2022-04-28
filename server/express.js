@@ -6,6 +6,8 @@ import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 
+import Template from '../template';
+
 //comment out before building for production
 import devBundle from './devBundle'
 
@@ -17,6 +19,11 @@ devBundle.compile(app)
 // static files
 const CURRENT_WORKING_DIR = process.cwd()
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
+
+// app template file
+app.get('/', (req, res) => {
+    res.status(200).send(Template())
+})
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json())
