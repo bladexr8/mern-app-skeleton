@@ -63,6 +63,7 @@ const update = async (req, res) => {
         await user.save()
         user.hashed_password = undefined
         user.salt = undefined
+        user.active = undefined
         res.json(user)
     } catch (err) {
         return res.status(400).json({

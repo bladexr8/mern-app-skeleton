@@ -13,12 +13,17 @@ const signin = async (req, res) => {
         let user = await User.findOne({ "email": req.body.email })
         if (!user) {
             console.log(`${req.body.email} not found in database...`)
-            return res.status(401).json({ error: 'User Not Found '})
+            return res.status(401).json({ error: 'Login Failed - User Not Found '})
         }
 
         if (!user.authenticate(req.body.password)) {
             console.log(`${req.body.email} authentication failed...`)
             return res.status(401).send({ error: "Login Failed - Invalid User Credentials" })
+        }
+
+        if (!user.active) {
+            console.log(`${req.body.email} authentication failed - account inactive...`)
+            return res.status(403).send({ error: "Login Failed - Unauthorized User" })
         }
 
         const token = jwt.sign({ _id: user._id }, config.jwtSecret)
