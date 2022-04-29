@@ -7,15 +7,18 @@ var { expressjwt: expJwt} = require('express-jwt')
 import config from './../../config/config'
 
 // route('/auth/signin').post(authCtrl.signin)
-const signin = async (req, res) => { 
+const signin = async (req, res) => {
+    console.log(`Signing in ${req.body.email}`) 
     try {
         let user = await User.findOne({ "email": req.body.email })
         if (!user) {
-            return res.status('401').json({ error: 'User Not Found '})
+            console.log(`${req.body.email} not found in database...`)
+            return res.status(401).json({ error: 'User Not Found '})
         }
 
-        if (!user.authenicate(req.body.password)) {
-            return res.status('401').send({ error: "Login Failed - Invalid User Credentials" })
+        if (!user.authenticate(req.body.password)) {
+            console.log(`${req.body.email} authentication failed...`)
+            return res.status(401).send({ error: "Login Failed - Invalid User Credentials" })
         }
 
         const token = jwt.sign({ _id: user._id }, config.jwtSecret)
@@ -31,7 +34,9 @@ const signin = async (req, res) => {
             }
         })
     } catch (err) {
-        return res.status('401').json({ error: "Could not sign in" })
+        console.error(`***Error Signing In ${req.body.email}`)
+        console.error(err)
+        return res.status(401).json({ error: "Could not sign in" })
     }
  }
 
